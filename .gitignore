@@ -17,6 +17,7 @@ nosetests.xml
 .python-version
 *tags*
 *.log
+*.gitignore
 *.txt
 *.pyc
 venv/

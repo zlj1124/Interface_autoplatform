@@ -1,5 +1,7 @@
 <template>
         <div class="homeBox">
+            <canvas id="canvas"></canvas>
+            <!-- <canvas id="canvas" :style="{height: screenHeight+'px'}"></canvas> -->
             <div style="width:32%;height: auto;margin-left: 30%">
                 <div class="title0">自动化接口测试平台</div>
                 <div class="title1">项目管理、接口管理、用例管理、测试报告、任务设置</div>
@@ -10,9 +12,9 @@
                         <div class="pic3"><img src="../assets/page1_2.png" alt="pic3"></div>
                     </div>
                 </div>
-                <img class="img-login" src="../assets/page1_3.jpg"/>
+                <!-- <img class="img-login" src="../assets/page1_3.jpg"/> -->
             </div>
-            <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+            <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm login-container">
                 <h3 class="title">系统登录</h3>
                 <el-form-item prop="account">
                     <el-input type="text" v-model.trim="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
@@ -29,11 +31,14 @@
         </div>
     </template>
 <script>
+    
 /* eslint-disable */
         import { requestLogin, recordVisitor } from '../api/api';
         export default {
             data () {
                 return {
+                   
+
                     logining: false,
                     ruleForm2: {
                         // account: '',
@@ -54,8 +59,134 @@
                     checked: true
                 }
             },
+         
+
+            mounted (){
+
+            // this.getVisitor();
+            // this.carouselPicture()
+                // CANVAS
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var cw = canvas.width = window.innerWidth,
+                cx = cw / 2;
+            var ch = canvas.height = window.innerHeight,
+                cy = ch / 2;
+ 
+            var requestId = null;
+ 
+            var colors = ["#93DFB8", "#FFC8BA", "#E3AAD6", "#B5D8EB", "#FFBDD8"];
+ 
+            function Particle() {
+                this.x = Math.random() * cw;
+                this.y = Math.random() * ch;
+                this.r = 15 + ~~(Math.random() * 20); //radius of the circumcircle
+                this.minR = 2 + ~~(Math.random() * 2) ;
+                this.maxR = 6 + ~~(Math.random() * 2) ;
+                this.l = 3 + ~~(Math.random() * 2); //polygon sides
+                this.a = 2 * Math.PI / this.l;      // angle between polygon vertices
+                this.rot = Math.random() * Math.PI; // polygon rotation
+                this.speed = .05 + Math.random() / 2;
+                this.rotSpeed = 0.005 + Math.random() * .005;
+                this.color = colors[~~(Math.random() * colors.length)];
+            }
+            Particle.prototype.update = function() {
+                if(this.y < -this.r) {
+                    this.y = ch + this.r;
+                    this.x = Math.random() * cw;
+                }
+                this.y -= this.speed;
+            }
+            Particle.prototype.draw = function() {
+                ctx.save();      //多边形
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot);
+                ctx.beginPath();
+                for(var i = 0; i < this.l; i++) {
+                    var x = this.r * Math.cos(this.a * i);
+ 
+                    var y = this.r * Math.sin(this.a * i);
+                    ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = this.color;
+                ctx.stroke();
+                ctx.restore();
+ 
+                ctx.save();       //星星
+                ctx.beginPath();
+                ctx.translate(this.x / 1.1, this.y / 2);
+                ctx.rotate(this.rot);
+                ctx.globalAlpha = light;
+                for(var i = 0; i < 5; i ++){
+                    var x = 5;
+                    var y = 5;
+                    ctx.lineTo( Math.cos( (18 + i*72 )/180 * Math.PI) * this.maxR + x,
+                                -Math.sin( (18 + i*72 )/180 * Math.PI) * this.maxR + y)
+                    ctx.lineTo( Math.cos( (54 + i*72 )/180 * Math.PI) * this.minR + x,
+                                -Math.sin( (54 + i*72 )/180 * Math.PI) * this.minR + y)
+                }
+                ctx.closePath();
+                ctx.lineWidth = 1;
+                ctx.fillStyle = "#fbd94e";
+                ctx.strokeStyle = "#fbd94e";
+                ctx.lineJoin = "round";
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+            }
+ 
+            var particles = [];
+            for(var i = 0; i < 20; i++) {
+                var p = new Particle();
+                particles.push(p)
+            }
+ 
+            function Draw() {
+                requestId = window.requestAnimationFrame(Draw);
+                //ctx.globalAlpha=0.65;
+                ctx.clearRect(0, 0, cw, ch);
+                particles.map((p) => {
+                    p.rot += p.rotSpeed;
+                    p.update();
+                    p.draw();
+                })
+ 
+            }
+ 
+            function Init() {
+                if(requestId) {
+                    window.cancelAnimationFrame(requestId);
+                    requestId = null;
+                }
+ 
+                cw = canvas.width = window.innerWidth, cx = cw / 2;
+                ch = canvas.height = window.innerHeight, cy = ch / 2;
+ 
+                //particles.map((p) => p.update());
+                Draw();
+            };
+ 
+            setTimeout(function() {
+                Init();
+                window.addEventListener('resize', Init, false);
+            }, 15);
+ 
+            var light = 1;    //透明度
+            setInterval(function(){
+                if(light == 1){
+                    light = .5;
+                }else{
+                    light = 1;
+                }
+            },350)
+            }  ,      
+
+
+                        
             methods: {
-    
+                
                 //重置
                 handleReset2 () {
                     this.$refs.ruleForm2.resetFields()
@@ -116,13 +247,12 @@
                 
     
             },
-            // mounted() {
-            //     this.getVisitor();
-            //     this.carouselPicture()
-            // }
+         
         }
         
     
+
+      
     </script>
     
     <style lang="scss" scoped>
@@ -134,31 +264,31 @@
             background-color: #191c2c;
         }
       .login-container {
-        /* box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02); */
-          position: absolute;
+    
+        position: absolute;
         -webkit-border-radius: 5px;
         border-radius: 5px;
         -moz-border-radius: 5px;
         background-clip: padding-box;
-        /*margin: 180px auto;*/
-          /*margin-top: 10%;*/
-          /*right: 50px;*/
+      
         width: 300px;
+        
         padding: 35px 35px 15px 35px;
         background: #23305a;
         border: 1px solid #eaeaea;
         box-shadow: 0 0 25px #cac6c6;
-          z-index: 1000;
+        z-index: 1000;
         float: right;
-        right: 4%;
-        top: 25%;
+        right: 42%;
+        top: 40%;
+   
         .title {
           margin: 0px auto 40px auto;
           text-align: center;
           color: #2ec0f6;
         }
         .remember {
-          margin: 0px 0px 35px 0px;
+          margin: 0px 15px 35px 0px;
             color: #eaeaea;
         }
       }
@@ -265,5 +395,14 @@
             animation: to-scroll1  10s ease infinite;
             /*animation-fill-mode: both;*/
         }
+        .canvas {
+                position: fixed;
+                z-index: -1;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                background: radial-gradient(#374566, #010203);
+            }
+        
     </style>
     
