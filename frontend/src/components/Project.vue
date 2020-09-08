@@ -98,7 +98,8 @@
                 this.sysUserName = name || '';
 //				this.sysUserAvatar = '../assets/user.png';
             }
-            this.project_id = this.$route.params.project_id;
+			this.project_id = this.$route.params.project_id;
+			console.log(this.project_id)
         }
     };
 
