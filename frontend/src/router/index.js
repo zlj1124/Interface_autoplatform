@@ -16,7 +16,13 @@ const ApiInfo = () => import('../components/project/api/updateApi/ApiInfo.vue');
 const testApi = () => import('../components/project/api/updateApi/TestApi.vue');
 const UpdateApi = () => import('../components/project/api/updateApi/UpdateApi.vue');
 const ApiDynamic = () => import('../components/project/api/updateApi/ApiDynamic.vue');
-
+const AutomationTest = () => import('../components/project/automation/AutomationTest.vue');
+const CaseList = () => import('../components/project/automation/CaseList.vue');
+const CaseListGroup = () => import('../components/project/automation/CaseListGroup.vue');
+const CaseApiList = () => import('../components/project/automation/CaseApiList.vue');
+const AddCaseApi = () => import('../components/project/automation/AddCaseApi.vue');
+const UpdateCaseApi = () => import('../components/project/automation/UpdateCaseApi.vue');
+const TestReport = () => import('../components/project/automation/TestReport.vue');
 Vue.use(VueRouter);
 
 const routes = [
@@ -67,20 +73,20 @@ const routes = [
                     },
                     { path: '/updateApi/project=:project_id/api=:api_id', component: UpdateApi, name: '修改'},
                 ]},
-        // {   path: '/automationTest/project=:project_id',
-        //         component: AutomationTest,
-        //         name: '自动化测试',
-        //         leaf: true,
-        //         child: true,
-        //         children: [
-        //             {   path: '/caseList/project=:project_id', component: CaseList, name: '用例列表'},
-        //             {   path: '/caseList/project=:project_id/first=:firstGroup', component: CaseListGroup, name: '分组用例列表'},
-        //             {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'},
-        //             {   path: '/addCaseApi/project=:project_id/case=:case_id', component: AddCaseApi, name: '添加新接口'},
-        //             {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'},
-        //             {   path: '/testReport/project=:project_id', component: TestReport, name: '测试报告'},
-        //         ]
-        // },
+        {   path: '/automationTest/project=:project_id',
+                component: AutomationTest,
+                name: '自动化测试',
+                leaf: true,
+                child: true,
+                children: [
+                    {   path: '/caseList/project=:project_id', component: CaseList, name: '用例列表'},
+                    {   path: '/caseList/project=:project_id/first=:firstGroup', component: CaseListGroup, name: '分组用例列表'},
+                    {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'},
+                    {   path: '/addCaseApi/project=:project_id/case=:case_id', component: AddCaseApi, name: '添加新接口'},
+                    {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'},
+                    {   path: '/testReport/project=:project_id', component: TestReport, name: '测试报告'},
+                ]
+        },
         // {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
         // {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
         // {   path: '/projectReport/project=:project_id', component: ProjectReport, name: '自动化测试报告', leaf: true},

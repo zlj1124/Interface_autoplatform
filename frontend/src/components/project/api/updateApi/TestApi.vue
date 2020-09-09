@@ -509,10 +509,9 @@
                                     data: _parameter,
                                     headers: headers,
                                     timeout: 5000,
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        Authorization: sessionStorage.getItem('token')
-                                    },
+                                    // headers: {                                   
+                                    //     Authorization: sessionStorage.getItem('token')
+                                    // },
                                     success: function (data, status, jqXHR) {
                                         self.loadingSend = false;
                                         self.form.statusCode = jqXHR.status;
@@ -536,10 +535,9 @@
                                 data: _parameter,
                                 headers: headers,
                                 timeout: 5000,
-                                headers: {
-                            "Content-Type": "application/json",
-                            Authorization: sessionStorage.getItem('token')
-                        },
+                        //         headers: {
+                        //         Authorization: sessionStorage.getItem('token')
+                        // },
                                 success: function (data, status, jqXHR) {
                                     self.loadingSend = false;
                                     self.form.statusCode = jqXHR.status;
