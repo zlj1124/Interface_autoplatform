@@ -23,6 +23,10 @@ const CaseApiList = () => import('../components/project/automation/CaseApiList.v
 const AddCaseApi = () => import('../components/project/automation/AddCaseApi.vue');
 const UpdateCaseApi = () => import('../components/project/automation/UpdateCaseApi.vue');
 const TestReport = () => import('../components/project/automation/TestReport.vue');
+const ProjectMember = () => import('../components/project/ProjectMember.vue');
+const ProjectDynamic = () => import('../components/project/ProjectDynamic.vue');
+const ProjectReport = () => import('../components/project/ProjectReport.vue');
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -87,9 +91,9 @@ const routes = [
                     {   path: '/testReport/project=:project_id', component: TestReport, name: '测试报告'},
                 ]
         },
-        // {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
-        // {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
-        // {   path: '/projectReport/project=:project_id', component: ProjectReport, name: '自动化测试报告', leaf: true},
+        {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
+        {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
+        {   path: '/projectReport/project=:project_id', component: ProjectReport, name: '自动化测试报告', leaf: true},
           ]
 },
 

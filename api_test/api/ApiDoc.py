@@ -557,6 +557,7 @@ class LeadSwagger(APIView):
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             swagger_api(data["url"], data["project_id"], request.user)
+          
             return JsonResponse(code="999999", msg="成功!")
         except Exception as e:
             logging.exception(e)

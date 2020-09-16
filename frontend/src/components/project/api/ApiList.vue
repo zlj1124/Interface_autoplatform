@@ -401,7 +401,7 @@
                                 });
                                 self.listLoading = true;
                                 self.addLoading = false;
-                                self.loadSwaggerApi = false;
+                                self.loadSwaggerApi =false;
                                 self.getApiList()
                             }
                             else {

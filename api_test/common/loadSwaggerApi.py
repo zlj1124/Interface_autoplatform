@@ -23,7 +23,9 @@ def swagger_api(url, project, user):
     :return:
     """
     req = requests.get(url)
+
     data = req.json()
+
     apis = data["paths"]
 
     try:
@@ -31,7 +33,7 @@ def swagger_api(url, project, user):
     except KeyError:
         pass
     for api, m in apis.items():
-        print
+        # print
         requestApi = {
             "project_id": project, "status": True, "mockStatus": "200", "code": "", "desc": "",
             "httpType": "HTTP", "responseList": []
@@ -39,10 +41,13 @@ def swagger_api(url, project, user):
        
         requestApi["apiAddress"] = api
         for requestType, data in m.items():
+            if (requestType =='parameters') or len(data)==0:
+                continue   
             requestApi["requestType"] = requestType.upper()
             try:
-
-                requestApi["name"] = data["summary"]
+              
+             
+                requestApi["name"] = data["description"]
 
             except KeyError:
 
@@ -58,7 +63,7 @@ def swagger_api(url, project, user):
                 requestApi["headDict"] = [{"name": "Content-Type", "value": data["consumes"][0]}]
             except KeyError:
                 requestApi["requestParameterType"] = "raw"
-            print(requestApi)
+            # print(requestApi)
             for j in data["parameters"]:
                 
                 if j["in"] == "header":  
@@ -86,7 +91,7 @@ def swagger_api(url, project, user):
                         pass
                 else:
                     requestApi=requestApi
-                    print('j')        
+                    print('over')        
      
         requestApi["userUpdate"] = user.id
     
@@ -109,15 +114,16 @@ def add_swagger_api(data, user):
                 if serialize.is_valid():
                     serialize.save(project=obj)
                     api_id = serialize.data.get("id")
-              
-                 
-                    if len(data.get("headDict")):
+                    # print('*'*8)
+                    # print(t(data.get("headDict")))
+                    if len(data.get("headDict"))>0:
                         for i in data["headDict"]:
                             if i.get("name"):
                                 i["api"] = api_id
                                 head_serialize = ApiHeadDeserializer(data=i)
                                 if head_serialize.is_valid():
                                     head_serialize.save(api=ApiInfo.objects.get(id=api_id))
+                                    
                     if data["requestParameterType"] == "form-data":
                         if len(data.get("requestList")):
                             for i in data["requestList"]:
@@ -126,9 +132,9 @@ def add_swagger_api(data, user):
                                     param_serialize = ApiParameterDeserializer(data=i)
                                     if param_serialize.is_valid():
                                         param_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                    else:
-                        if len(data.get("requestList")):
-                            ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"].replace("'", "\"")).save()
+                    # else:
+                    #     if len(data.get("requestList")):
+                    #         ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"].replace("'", "\"")).save()
                     if len(data.get("responseList")):
                         for i in data["responseList"]:
                             if i.get("name"):
@@ -144,8 +150,8 @@ def add_swagger_api(data, user):
                                                      description="新增接口“%s”" % data["name"])
                     api_record.save()
         except Exception as e:
-            #  print('*'*8)
-            # logging.exception(e)
+            print('*'*8)
+            logging.exception(e)
             return False
     except ObjectDoesNotExist:
         return False

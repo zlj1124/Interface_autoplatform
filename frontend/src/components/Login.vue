@@ -266,6 +266,8 @@
       .login-container {
     
         position: absolute;
+        opacity: .8;
+
         -webkit-border-radius: 5px;
         border-radius: 5px;
         -moz-border-radius: 5px;
@@ -274,7 +276,8 @@
         width: 300px;
         
         padding: 35px 35px 15px 35px;
-        background: #23305a;
+        /* background: #23305a; */
+        background: radial-gradient(#374566,#1a1f30);
         border: 1px solid #eaeaea;
         box-shadow: 0 0 25px #cac6c6;
         z-index: 1000;
